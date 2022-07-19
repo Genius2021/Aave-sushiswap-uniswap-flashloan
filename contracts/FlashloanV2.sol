@@ -31,6 +31,12 @@ contract FlashloanV2 is FlashLoanReceiverBaseV2, Withdrawable {
         NONE
     }
 
+    function pullTokens(address _asset) public onlyOwner {
+        IERC20 tokenToPull = IERC20(_asset);
+        tokenToPull.approve(msg.sender , address(this).balance);
+        tokenToPull.transferFrom(address(this), msg.sender, address(this).balance);
+    }
+
     function executeOperation(
         address[] calldata assets,
         uint256[] calldata amounts,
@@ -67,10 +73,7 @@ contract FlashloanV2 is FlashLoanReceiverBaseV2, Withdrawable {
         // }
 
         uint amountOwing = borrowedAmount + premiumAmount; 
-        IERC20(borrowedAsset).approve(address(LENDING_POOL), amountOwing);
-
-        IERC20(borrowedAsset).transfer(tx.origin , address(this).balance);
-        
+        IERC20(borrowedAsset).approve(address(LENDING_POOL), amountOwing);        
         return true;
     }
 

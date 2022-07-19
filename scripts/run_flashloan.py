@@ -25,10 +25,10 @@ def main():
         flash_amount, 
         swapping_pair, 
         uniswap_factory, 
-        {"from": acct, "gas_limit": 12000000, "allow_revert": True, "gas_price": 22000000000}
+        {"from": acct, "gas_limit": 12000000, "allow_revert": True, "gas_price": 20000000000}
     )
 
-    if network.show_active == "kovan":
+    if network.show_active() == "kovan":
         print("You did it! View your tx here: " + ETHERSCAN_TX_URL.format(flashloan_tx.txid))
     print("Flashloan success!")
     return flashloan_contract
